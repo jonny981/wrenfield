@@ -1,0 +1,54 @@
+{
+  "id": "w32-reversed-decisions",
+  "expected": "Money floats→integer cents (money-as-floats.md Mar 2025 → money-is-cents.md + 4d04f9a Apr 2025). Pagination offset→cursor (0c0f808 Apr → e06b530 Oct + decisions/cursor-pagination.md). Deploy manual→docker (deploy.md Mar → deploy-docker.md + Dockerfile cae07f0 Aug). Webhook delivery inline-fetch→outbox (decision 43c4725, drainer bb52bed Jan 2026). index.ts monolith→routes→\"fat again\"→ops router (9f4ae5b Jul 2025, fc923f0/b40d03f Apr 2026).",
+  "gold": {
+    "commits": [
+      "4d04f9a",
+      "e06b530",
+      "cae07f0",
+      "bb52bed",
+      "fc923f0"
+    ],
+    "paths": [
+      "handbook/decisions/money-as-floats.md",
+      "handbook/decisions/money-is-cents.md",
+      "handbook/decisions/cursor-pagination.md",
+      "handbook/decisions/outbox.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "cents|money"
+      ],
+      [
+        "cursor|paginat|offset"
+      ],
+      [
+        "docker|deploy"
+      ],
+      [
+        "outbox|webhook"
+      ],
+      [
+        "revers",
+        "supersed",
+        "earlier",
+        "originally",
+        "previously",
+        "first chose",
+        "changed course"
+      ]
+    ],
+    "forbid_mention": [
+      "floats?\\s+(is|are|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|used|format)",
+      "offset\\s+(is|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|scheme)"
+    ],
+    "cite_path": [
+      "decisions/"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

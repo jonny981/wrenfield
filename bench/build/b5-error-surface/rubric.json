@@ -1,0 +1,15 @@
+{
+  "task": "b5-error-surface",
+  "decision_encoded": "rules 12/16/17 — errors extend AppError, carry code+message, map status at the edge; the standard body is {error, message} produced by the errorHandler, not ad-hoc res.status().json() in the route",
+  "hidden_tests": "hidden.test.ts",
+  "blockers": [
+    { "id": "hidden-tests-pass", "check": "npm test with hidden.test.ts dropped in", "why": "asserts 4xx + standard error body on unknown customer" },
+    { "id": "app-error-subclass", "check": "the new failure throws an AppError subclass (or a mapped domain error), not res.status in-route or a bare Error", "why": "rule 12" },
+    { "id": "standard-body", "check": "response body is {error, message} — the errorHandler shape (asserted by hidden tests)", "test": "returns the standard error body {error, message}", "why": "rule 16" }
+  ],
+  "quality": [
+    { "id": "status-mapped", "check": "status chosen by the error/status mapping at the edge, not hardcoded in the route", "why": "rule 17" },
+    { "id": "no-swallow", "check": "sqlite/other errors are not silently swallowed to produce the 4xx", "why": "rule 38" },
+    { "id": "lookup-in-store", "check": "customer existence checked via store/domain, not raw SQL in the route", "why": "store owns SQL" }
+  ]
+}

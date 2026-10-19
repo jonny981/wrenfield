@@ -1,0 +1,25 @@
+{
+  "id": "w21-rule-any",
+  "expected": "rules/04-no-any-in-src.md — any casts are banned in src/; type the row shape or widen at the boundary.",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "rules/04-no-any-in-src.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "04"
+      ],
+      [
+        "any"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "04-no-any|04-"
+    ],
+    "cite_commit": []
+  }
+}

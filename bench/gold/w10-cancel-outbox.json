@@ -1,0 +1,35 @@
+{
+  "id": "w10-cancel-outbox",
+  "expected": "No. The place handler writes status change + outbox row in one transaction (cc58764); the cancel handler calls setStatus and stops — no outbox insert, no webhook (src/routes/orders.ts). A real asymmetry: subscribers see orders appear but never see them cancelled.",
+  "gold": {
+    "commits": [
+      "cc58764",
+      "f56f5f6"
+    ],
+    "paths": [
+      "src/routes/orders.ts",
+      "src/outbox.ts",
+      "handbook/decisions/outbox.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "\\bno\\b",
+        "does not",
+        "no event",
+        "silent",
+        "doesn.t"
+      ]
+    ],
+    "forbid_mention": [
+      "yes.*(emits|writes|fires)",
+      "(it|cancel|the endpoint|the api|the service)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)(emits?|writes?|publishes?|fires?|produces?|enqueues?|creates?)\\s+(an?|the|also)\\s*[^.\\n]{0,15}(outbox|event)",
+      "cancel\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(emits?|produces?|writes?|fires?|publishes?|enqueues?)\\s+(an?|the)\\s+event"
+    ],
+    "cite_path": [
+      "orders\\.ts|outbox"
+    ],
+    "cite_commit": []
+  }
+}

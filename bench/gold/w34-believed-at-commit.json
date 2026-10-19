@@ -1,0 +1,41 @@
+{
+  "id": "w34-believed-at-commit",
+  "expected": "At 5286da2 (Feb 12 2025) the lifecycle note said draft→placed→paid→fulfilled→closed with cancelled from draft or placed — as convention, not enforcement (\"until the state machine lands\"). The May 6 update (b38f789) marked it enforced — canTransition was real by then. product/order-states.md (Mar 2026) still wrongly tells a contractor placed goes straight to fulfilled.",
+  "gold": {
+    "commits": [
+      "5286da2",
+      "b38f789",
+      "288037e"
+    ],
+    "paths": [
+      "handbook/product/order-lifecycle.md",
+      "handbook/product/order-states.md",
+      "src/domain/orderStatus.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "paid"
+      ],
+      [
+        "enforce",
+        "state machine",
+        "convention"
+      ],
+      [
+        "fulfilled"
+      ]
+    ],
+    "forbid_mention": [
+      "placed goes straight to fulfilled.{0,30}correct",
+      "(yes|correct|right|true)[^.\\n]{0,40}placed[^.\\n]{0,30}(to|->|straight|directly)[^.\\n]{0,15}fulfilled"
+    ],
+    "cite_path": [
+      "order-lifecycle|orderStatus"
+    ],
+    "cite_commit": [
+      "5286da2"
+    ]
+  }
+}

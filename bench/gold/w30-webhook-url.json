@@ -1,0 +1,32 @@
+{
+  "id": "w30-webhook-url",
+  "expected": "Setting ORDER_WEBHOOK_URL starts the outbox drainer at boot (src/index.ts) — the outbox table's undelivered order events get POSTed to that URL with retries. Unset, no drainer runs and events queue (config.ts).",
+  "gold": {
+    "commits": [
+      "26c1e27",
+      "bb52bed",
+      "f56f5f6"
+    ],
+    "paths": [
+      "src/config.ts",
+      "src/outbox.ts",
+      "src/index.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "outbox",
+        "drainer"
+      ],
+      [
+        "webhook"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "config|outbox"
+    ],
+    "cite_commit": []
+  }
+}

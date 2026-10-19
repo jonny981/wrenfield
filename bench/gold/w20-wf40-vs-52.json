@@ -1,0 +1,33 @@
+{
+  "id": "w20-wf40-vs-52",
+  "expected": "WF-40 lived in the route's own pagination helper: it multiplied the client's page-ish input into LIMIT/OFFSET wrongly. The July fix made the helper take a real row offset. In the October refactor the shared listQuery helper was built fresh and re-misread its input as a page — same wrong assumption, new code location. The fix did not \"not stick\"; the regression was rewritten in, which is why WF-52 got its own test.",
+  "gold": {
+    "commits": [
+      "15c2f2f",
+      "7e3afab",
+      "4f6c948"
+    ],
+    "paths": [
+      "handbook/runbooks/pagination-bug-wf40.md",
+      "handbook/runbooks/pagination-bug-wf52.md",
+      "src/store/listQuery.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "reintroduc",
+        "regress",
+        "rewrit",
+        "shared",
+        "listquery",
+        "refactor"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "pagination-bug|listQuery"
+    ],
+    "cite_commit": []
+  }
+}

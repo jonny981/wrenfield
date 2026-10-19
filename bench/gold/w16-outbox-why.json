@@ -1,0 +1,39 @@
+{
+  "id": "w16-outbox-why",
+  "expected": "Placing an order used to POST to the webhook inline — a webhook timeout made the API call fail after the order was already placed. The outbox (decision 43c4725, table f56f5f6, drainer bb52bed boot-wired 26c1e27) makes the status write and the event atomic (cc58764) and retries delivery in the background.",
+  "gold": {
+    "commits": [
+      "43c4725",
+      "f56f5f6",
+      "bb52bed",
+      "26c1e27",
+      "cc58764"
+    ],
+    "paths": [
+      "handbook/decisions/outbox.md",
+      "src/outbox.ts",
+      "src/store/migrations.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "webhook"
+      ],
+      [
+        "retr",
+        "atomic",
+        "durab",
+        "crash",
+        "background"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "outbox"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

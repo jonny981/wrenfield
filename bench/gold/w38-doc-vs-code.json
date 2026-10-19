@@ -1,0 +1,31 @@
+{
+  "id": "w38-doc-vs-code",
+  "expected": "Right. src/routes/ops.ts daily-summary sums json_extract qty*unitPriceCents with no discountPct and no shipping — the doc's pre-discount claim is accurate, and the doc even cites the incident that taught it (WF-97).",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "handbook/api/ops-exports-reports.md",
+      "src/routes/ops.ts",
+      "handbook/runbooks/incident-wf97.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "right|accurate|correct|yes"
+      ],
+      [
+        "discount"
+      ]
+    ],
+    "forbid_mention": [
+      "doc is (wrong|stale)",
+      "doc(umentation|ument)?[^.\\n]{0,15}(is|was)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,12}(wrong|incorrect|inaccurate|stale|misleading)",
+      "doc(ument|umentation)?[^.\\n]{0,20}(doesn.t|does not|fails to)[^.\\n]{0,15}match"
+    ],
+    "cite_path": [
+      "ops\\.ts|ops-exports"
+    ],
+    "cite_commit": []
+  }
+}

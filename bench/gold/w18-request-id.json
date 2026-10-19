@@ -1,0 +1,34 @@
+{
+  "id": "w18-request-id",
+  "expected": "The requestId middleware (src/http/requestId.ts) stamps each request and the logging middleware logs with it — wired mid-July 2025 (e117f0a and the typing fixes 1388c99/11d38a1/638ea57). Rule 37 (every log carries a request id) was written down February 24 2026 with the pino rules (3126052).",
+  "gold": {
+    "commits": [
+      "e117f0a",
+      "1388c99",
+      "11d38a1",
+      "638ea57",
+      "3126052"
+    ],
+    "paths": [
+      "src/http/requestId.ts",
+      "rules/37-every-log-carries-request-id.md",
+      "handbook/conventions/log-fields.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "middleware",
+        "requestId"
+      ],
+      [
+        "37"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "requestId|37-"
+    ],
+    "cite_commit": []
+  }
+}

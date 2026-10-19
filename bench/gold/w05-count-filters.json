@@ -1,0 +1,42 @@
+{
+  "id": "w05-count-filters",
+  "expected": "No — GET /orders/count honours only the status filter; customerId and q are silently ignored (src/routes/orders.ts, api/orders-list-count.md). That silence is what caused incident WF-63 — a dashboard claimed a per-customer count of \"all placed orders\".",
+  "gold": {
+    "commits": [
+      "9e23f51"
+    ],
+    "paths": [
+      "handbook/api/orders-list-count.md",
+      "handbook/runbooks/incident-wf63.md",
+      "src/routes/orders.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "status"
+      ],
+      [
+        "\\bno\\b",
+        "only",
+        "ignores?",
+        "\\bnot\\b"
+      ],
+      [
+        "(only|just|solely)[^.\\n]{0,15}status",
+        "status[^.\\n]{0,30}(only|filter)",
+        "ignores?[^.\\n]{0,25}(non-status|other|customer|product|any other)"
+      ]
+    ],
+    "forbid_mention": [
+      "yes, it (filters|honours|works)",
+      "(count|/count|endpoint)\\s+(honours?|respects|applies|supports)[^.\\n]{0,20}(filter|param|field)",
+      "(customer|product|tag|date)[^.\\n]{0,10}filters?\\s+(are|is|also)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,10}(honoured|respected|applied|supported|work)",
+      "(yes|correct|right)[^.\\n]{0,40}(honours?|respects|applies|supports)[^.\\n]{0,20}filter"
+    ],
+    "cite_path": [
+      "orders-list-count|incident-wf63|orders\\.ts"
+    ],
+    "cite_commit": []
+  }
+}

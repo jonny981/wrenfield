@@ -1,0 +1,29 @@
+{
+  "id": "w27-payment-eval",
+  "expected": "No switch — the eval compared Stripe, Adyen and Braintree against the incumbent and stayed put: the switching cost didn't beat the fee saving at current volume. Revisit if monthly volume doubles or they expand past UK/EU (vendors/payment-providers-eval.md, vendors/payment-gateway-current.md).",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "handbook/vendors/payment-providers-eval.md",
+      "handbook/vendors/payment-gateway-current.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "stayed",
+        "incumbent",
+        "no switch",
+        "kept"
+      ]
+    ],
+    "forbid_mention": [
+      "switched to (stripe|adyen|braintree)",
+      "(moved|migrated|adopted|chose|picked|went with|uses?|use)\\s+(to\\s+)?(stripe|adyen|braintree)"
+    ],
+    "cite_path": [
+      "payment"
+    ],
+    "cite_commit": []
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "w25-rule-rows",
+  "expected": "rules/22-never-return-store-rows.md — store rows leak column names and internal fields; map through the response mapper (orderToResponse) so the API shape is deliberate.",
+  "gold": {
+    "commits": [
+      "c80469b",
+      "6bdcbd3"
+    ],
+    "paths": [
+      "rules/22-never-return-store-rows.md",
+      "src/http/responses.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "22"
+      ],
+      [
+        "map",
+        "response"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "22-|responses"
+    ],
+    "cite_commit": []
+  }
+}

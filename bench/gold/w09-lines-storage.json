@@ -1,0 +1,32 @@
+{
+  "id": "w09-lines-storage",
+  "expected": "No order_lines table — lines live as a JSON array on the orders row (decisions/json-lines-column.md, migrations). Written once at create, edited only on drafts, always read whole; the cost is you cannot cheaply query \"all orders containing sku X\".",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "handbook/decisions/json-lines-column.md",
+      "src/store/migrations.ts",
+      "src/store/orders.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "json"
+      ],
+      [
+        "\\bno\\b",
+        "no table",
+        "single column",
+        "json (column|blob|string)"
+      ]
+    ],
+    "forbid_mention": [
+      "order_lines table (exists|is used)"
+    ],
+    "cite_path": [
+      "json-lines-column|migrations"
+    ],
+    "cite_commit": []
+  }
+}

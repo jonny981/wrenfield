@@ -1,0 +1,28 @@
+{
+  "id": "w26-rule-env",
+  "expected": "rules/30-env-reads-go-through-config.md — one config module validates the env at boot (zod, since cbb401a); routes read config.x, never process.env directly.",
+  "gold": {
+    "commits": [
+      "cbb401a"
+    ],
+    "paths": [
+      "rules/30-env-reads-go-through-config.md",
+      "src/config.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "30"
+      ],
+      [
+        "config"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "30-|config\\.ts"
+    ],
+    "cite_commit": []
+  }
+}

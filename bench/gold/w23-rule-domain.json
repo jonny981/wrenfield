@@ -1,0 +1,23 @@
+{
+  "id": "w23-rule-domain",
+  "expected": "rules/13-handlers-call-domain.md — handlers call domain functions; they never carry SQL or reach the store directly. Also arguably rules/28-no-business-logic-in-sql.md if the statement carries a rule.",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "rules/13-handlers-call-domain.md",
+      "rules/28-no-business-logic-in-sql.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "13"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "13-"
+    ],
+    "cite_commit": []
+  }
+}

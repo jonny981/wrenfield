@@ -1,0 +1,50 @@
+{
+  "id": "w36-money-provenance",
+  "expected": "March 18 2025: decision money-as-floats.md chose floats for speed \"for now\" (4e7b839). April 10-11: the reversal — cents (4d04f9a + schema/store/totals commits ebcb905/40dfdbf/33ab429/f561b80/ff0ef41), decision money-is-cents.md Apr 14 (b61ec9e). Rule 01 codified it August (16f847b era). The stale trace: money-as-floats.md is still in the repo marked only by git history — and old line/schema fields were renamed unitPriceCents.",
+  "gold": {
+    "commits": [
+      "4e7b839",
+      "4d04f9a",
+      "b61ec9e",
+      "ebcb905"
+    ],
+    "paths": [
+      "handbook/decisions/money-as-floats.md",
+      "handbook/decisions/money-is-cents.md",
+      "rules/01-money-is-integer-cents.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "float"
+      ],
+      [
+        "cents"
+      ],
+      [
+        "b61ec9e|4d04f9a|4e7b839"
+      ],
+      [
+        "revers",
+        "supersed",
+        "earlier",
+        "originally",
+        "previously",
+        "first chose",
+        "changed course"
+      ]
+    ],
+    "forbid_mention": [
+      "floats?\\s+(is|are|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|used|format|way)",
+      "cents\\s+was\\s+never\\s+(shipped|adopted|used|implemented)",
+      "cents\\s+(was|were|got)\\s+(replaced|reverted|superseded|dropped)"
+    ],
+    "cite_path": [
+      "money"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

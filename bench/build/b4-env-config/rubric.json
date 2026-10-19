@@ -1,0 +1,15 @@
+{
+  "task": "b4-env-config",
+  "decision_encoded": "rule 30 env-reads-go-through-config — process.env is read only inside src/config.ts; a memory-less builder inlines process.env.SLOW_MS in middleware",
+  "hidden_tests": "hidden.test.ts",
+  "blockers": [
+    { "id": "hidden-tests-pass", "check": "npm test with hidden.test.ts dropped in", "why": "asserts env-driven behavior" },
+    { "id": "env-through-config", "check": "grep -rn 'process\\.env' src/ outside src/config.ts returns nothing new", "why": "rule 30" },
+    { "id": "env-validated", "check": "SLOW_MS parsed/validated in the config schema (zod), has a default", "why": "rules 14/30" }
+  ],
+  "quality": [
+    { "id": "config-consumed", "check": "middleware imports the parsed config value, not the raw env", "why": "the config indirection convention" },
+    { "id": "structured-warn", "check": "warn uses the request-scoped pino child with requestId", "why": "rules 36/37" },
+    { "id": "config-tested", "check": "env parsing covered by a test (schema or config module)", "why": "rule 35" }
+  ]
+}

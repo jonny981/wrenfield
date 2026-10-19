@@ -1,0 +1,30 @@
+{
+  "id": "w39-dockerfile-check",
+  "expected": "Yes — Dockerfile exists, landed August 4 2025 (cae07f0) the same day the docker runbook was written (53e9d62). docker build -t orders-api . works.",
+  "gold": {
+    "commits": [
+      "cae07f0",
+      "53e9d62"
+    ],
+    "paths": [
+      "Dockerfile",
+      "handbook/runbooks/deploy-docker.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "cae07f0|august|aug 2025|yes"
+      ]
+    ],
+    "forbid_mention": [
+      "no dockerfile|dockerfile (is )?missing"
+    ],
+    "cite_path": [
+      "Dockerfile"
+    ],
+    "cite_commit": [
+      "cae07f0"
+    ]
+  }
+}

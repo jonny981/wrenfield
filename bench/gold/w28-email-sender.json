@@ -1,0 +1,23 @@
+{
+  "id": "w28-email-sender",
+  "expected": "Postmark — the transactional specialist. Deciding factor: deliverability on transactional mail is their whole product; \"not having to think about it\" beat SendGrid's price and SES's staffing cost (vendors/email-senders-eval.md).",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "handbook/vendors/email-senders-eval.md",
+      "handbook/vendors/email-sender-current.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "postmark"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "email-senders|email-sender"
+    ],
+    "cite_commit": []
+  }
+}

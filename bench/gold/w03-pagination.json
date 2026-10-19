@@ -1,0 +1,49 @@
+{
+  "id": "w03-pagination",
+  "expected": "Cursor pagination — an opaque cursor (created_at,id) the client passes back (decisions/cursor-pagination.md, conventions/pagination-cursor.md; landed e06b530 Oct 2025). conventions/pagination.md still describes the offset scheme and is stale.",
+  "gold": {
+    "commits": [
+      "e06b530",
+      "dd0ff88",
+      "3f604b9",
+      "e724830"
+    ],
+    "paths": [
+      "handbook/decisions/cursor-pagination.md",
+      "handbook/conventions/pagination-cursor.md",
+      "handbook/conventions/pagination.md",
+      "src/store/listQuery.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "cursor"
+      ],
+      [
+        "stale",
+        "superseded",
+        "outdated",
+        "out of date",
+        "no longer",
+        "old",
+        "obsolete"
+      ],
+      [
+        "pagination\\.md[^.\\n]{0,80}(stale|superseded|outdated|obsolete|old|no longer)",
+        "(stale|old|superseded|outdated|obsolete|no longer)[^.\\n]{0,30}pagination\\.md"
+      ]
+    ],
+    "forbid_mention": [
+      "offset (pagination )?is (the )?current",
+      "offset\\s+(is|remains?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|correct|right|scheme|way|standard)",
+      "cursor\\s+(was|were|got)\\s+[^.\\n]{0,15}(replaced|rejected|reverted|removed|dropped)",
+      "offset\\s+(replaced|superseded|took\\s+over|won|beat)\\s+cursor"
+    ],
+    "cite_path": [
+      "pagination-cursor|cursor-pagination",
+      "conventions/pagination\\.md"
+    ],
+    "cite_commit": []
+  }
+}

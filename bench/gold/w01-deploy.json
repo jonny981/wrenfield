@@ -1,0 +1,53 @@
+{
+  "id": "w01-deploy",
+  "expected": "Deploys are docker: docker build -t orders-api . then docker run with the wrenfield-data volume (handbook/runbooks/deploy-docker.md, committed 53e9d62; the Dockerfile landed the same day, cae07f0). handbook/runbooks/deploy.md still describes the earlier manual deploy and is stale — incident WF-55 (ac1c9c3) was a manual deploy gone wrong, which is what pushed the docker move.",
+  "gold": {
+    "commits": [
+      "53e9d62",
+      "cae07f0",
+      "89220e4",
+      "ac1c9c3"
+    ],
+    "paths": [
+      "handbook/runbooks/deploy-docker.md",
+      "handbook/runbooks/deploy.md",
+      "Dockerfile",
+      "handbook/runbooks/incident-wf55.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "docker",
+        "container",
+        "image"
+      ],
+      [
+        "stale",
+        "superseded",
+        "outdated",
+        "out of date",
+        "no longer",
+        "old",
+        "obsolete"
+      ],
+      [
+        "deploy\\.md[^.\\n]{0,90}(stale|superseded|outdated|obsolete|old|no longer|not.{0,12}current|wrong)",
+        "(stale|old|superseded|outdated|obsolete|no longer)[^.\\n]{0,40}deploy\\.md"
+      ]
+    ],
+    "forbid_mention": [
+      "docker\\s+(is|was|are|became|now)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(obsolete|stale|outdated|superseded|no longer)",
+      "deploy\\.md\\s+(is|remains?|stays?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|correct|right|proper|valid|accurate|up.to.date|canonical)",
+      "deploys?\\s+(are|is|remains?)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}manual\\b",
+      "manual\\s+(deploy|rsync|systemd)[^.\\n]{0,25}(is|remains?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(current|correct|right|today|how)"
+    ],
+    "cite_path": [
+      "deploy-docker",
+      "deploy\\.md"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

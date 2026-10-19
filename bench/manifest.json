@@ -1,0 +1,22 @@
+{
+  "name": "wrenfield-orders-api-memory-bench",
+  "repo_rev": "8ec324a",
+  "tasks_dir": "bench/tasks",
+  "gold_dir": "bench/gold",
+  "task_count": 40,
+  "held_out": [
+    "w31-stale-inventory",
+    "w32-reversed-decisions",
+    "w33-pagination-saga",
+    "w34-believed-at-commit",
+    "w35-correct-teammate",
+    "w36-money-provenance",
+    "w37-dedupe-surface",
+    "w38-doc-vs-code",
+    "w39-dockerfile-check",
+    "w40-restart-safety"
+  ],
+  "checks": "bench/check.mjs validates dataset integrity (task/gold pairing, gold commits resolve, gold paths exist at repo_rev). bench/check-answers.mjs validates the answer checks themselves: it runs the real score() over bench/answer-fixtures.json (reversed answers must fail, right answers must pass).",
+  "scoring": "Each gold/<id>.json check asserts the ANSWER's content and direction: must_mention groups (each needs >=1 regex hit, case-insensitive; trap tasks require the stale/wrong source flagged near its name), forbid_mention (none may hit; trap tasks reject affirmative reversed claims), cite_path (a cited path matching each regex must exist in the repo), cite_commit (a cited sha-prefix matching each regex must resolve in git).",
+  "exclusion": "bench/ is evaluation-only. A harness MUST exclude bench/** from every retrieval surface: file reads, search, git log/show of bench paths, and the working tree if visible to the evaluated agent."
+}

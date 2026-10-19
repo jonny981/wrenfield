@@ -1,0 +1,17 @@
+{
+  "task": "b2-mutation-idempotency",
+  "decision_encoded": "rule 18 mutations-require-idempotency-key (+ the comments-dedupe convention and the known products-POST gap) — every mutation endpoint takes Idempotency-Key and replays the recorded response",
+  "hidden_tests": "hidden.test.ts",
+  "blockers": [
+    { "id": "hidden-tests-pass", "check": "npm test with hidden.test.ts dropped in", "why": "asserts retry-with-key replays, does not double-apply" },
+    { "id": "key-required", "check": "POST without Idempotency-Key header 400s or is documented-required in the diff (the 400 is asserted by hidden tests)", "test": "rejects a mutation without an Idempotency-Key", "why": "rule 18" },
+    { "id": "replay-not-duplicate", "check": "same key + same body returns the original refund id, one row written (asserted by hidden tests)", "test": "replays the same key instead of double-applying", "why": "the recorded dedupe semantics" },
+    { "id": "migration-additive", "check": "refunds table added via a new additive migration, no alters to existing tables", "why": "rule 23" }
+  ],
+  "quality": [
+    { "id": "key-in-header", "check": "key read from the Idempotency-Key header, not body", "why": "existing mutation convention" },
+    { "id": "conflict-app-error", "check": "unknown/cancelled order fails through an AppError subclass with the standard error body", "why": "rules 12/16" },
+    { "id": "integer-amount", "check": "refund amount stored/compared as integer cents", "why": "rule 01" },
+    { "id": "one-tx", "check": "dedupe row + refund row written in one transaction", "why": "rule 26" }
+  ]
+}

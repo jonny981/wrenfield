@@ -1,0 +1,26 @@
+{
+  "id": "w17-agents-md",
+  "expected": "June 22 2026, commit 208b42e. It tells an agent: npm run seed / dev / test commands, the rules/ directory is enforced in review, the layer split (bootstrap → routes → domain → store), and the invariants (money is cents, ids branded, cursor pagination, idempotency keys, additive migrations).",
+  "gold": {
+    "commits": [
+      "208b42e"
+    ],
+    "paths": [
+      "AGENTS.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "208b42e|june|jun 2026"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "AGENTS\\.md"
+    ],
+    "cite_commit": [
+      "208b42e"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "w33-pagination-saga",
+  "expected": "Offset pagination shipped April 21 2025 (0c0f808/0b3e16c). WF-40 July: the helper treated the offset as a page number — rows skipped (6fcdced note, fix 15c2f2f + test 620253d). October 3: the listQuery refactor reintroduced the same wrong assumption (WF-52, fix 7e3afab + regression test 4f6c948). October 6-9: cursor pagination replaced offset entirely (e06b530, 783307d; contract dd0ff88). conventions/pagination.md still documents the dead scheme.",
+  "gold": {
+    "commits": [
+      "0c0f808",
+      "15c2f2f",
+      "620253d",
+      "7e3afab",
+      "4f6c948",
+      "e06b530",
+      "dd0ff88"
+    ],
+    "paths": [
+      "handbook/runbooks/pagination-bug-wf40.md",
+      "handbook/runbooks/pagination-bug-wf52.md",
+      "handbook/decisions/cursor-pagination.md",
+      "handbook/conventions/pagination.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "offset"
+      ],
+      [
+        "cursor"
+      ],
+      [
+        "wf.?40|15c2f2f"
+      ],
+      [
+        "wf.?52|7e3afab"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "pagination"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

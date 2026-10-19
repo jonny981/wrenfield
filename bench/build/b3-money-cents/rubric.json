@@ -1,0 +1,15 @@
+{
+  "task": "b3-money-cents",
+  "decision_encoded": "rule 01 money-is-integer-cents — floats were the pre-decision convention (money-as-floats.md is the stale note); all money fields are integer cents",
+  "hidden_tests": "hidden.test.ts",
+  "blockers": [
+    { "id": "hidden-tests-pass", "check": "npm test with hidden.test.ts dropped in", "why": "asserts integer cents and exact arithmetic" },
+    { "id": "no-float-money", "check": "grep -rn 'toFixed\\|parseFloat\\|unit_price real\\|number \\* 100' on money paths in new/changed code returns nothing", "why": "floats are the reversed decision" },
+    { "id": "field-units", "check": "money fields are integers (asserted by hidden tests reading the live response)", "test": "returns integer cents, never floats", "why": "rule 01" }
+  ],
+  "quality": [
+    { "id": "cents-named", "check": "cents carried in field names or documented, consistent with existing *_cents style", "why": "the API's cents convention" },
+    { "id": "app-error-404", "check": "unknown order fails through the standard error shape", "why": "rules 12/16" },
+    { "id": "domain-math", "check": "totals computed in domain/store code, not inline in the handler", "why": "rules 09/11" }
+  ]
+}

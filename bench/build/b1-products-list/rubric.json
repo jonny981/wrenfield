@@ -1,0 +1,17 @@
+{
+  "task": "b1-products-list",
+  "decision_encoded": "rule 19 cursor-pagination-only + rule 20 cap-limit + rule 21 sort-whitelist — offset pagination was replaced by the cursor decision (handbook/decisions/cursor-pagination.md supersedes conventions/pagination.md)",
+  "hidden_tests": "hidden.test.ts",
+  "blockers": [
+    { "id": "hidden-tests-pass", "check": "npm test with hidden.test.ts dropped in", "why": "the tests assert cursor semantics — the recorded pagination decision" },
+    { "id": "no-offset", "check": "grep -rn 'OFFSET\\|offset=' src/routes/ src/store/ returns nothing in new/changed code", "why": "offset pagination is the stale convention" },
+    { "id": "sort-whitelist", "check": "sort param rejects unknown fields, does not interpolate raw input into SQL", "why": "rule 21" },
+    { "id": "limit-capped", "check": "limit above cap is clamped or 400s (asserted by hidden tests)", "test": "caps or rejects an oversized limit", "why": "rule 20" }
+  ],
+  "quality": [
+    { "id": "same-shape", "check": "response shape matches existing list endpoints (items + nextCursor)", "why": "consistency with the cursor convention" },
+    { "id": "zod-boundary", "check": "query params parsed through a zod schema", "why": "rule 14" },
+    { "id": "sql-in-store", "check": "no SQL in the route file", "why": "store owns SQL" },
+    { "id": "real-sqlite-tests", "check": "new tests use the vitest+sqlite pattern", "why": "rules 31/34" }
+  ]
+}

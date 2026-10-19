@@ -1,0 +1,43 @@
+{
+  "id": "w07-error-shape",
+  "expected": "{ error: \"snake_case_code\", message: \"human text\" } — thrown AppErrors carry the pair, the middleware writes it (src/errors.ts, conventions/errors.md, rules/16). The June version of that same note described a codes-only body; September's rewrite (81a1806) added the message field.",
+  "gold": {
+    "commits": [
+      "81a1806",
+      "bc30a87",
+      "9bf67ff"
+    ],
+    "paths": [
+      "handbook/conventions/errors.md",
+      "src/errors.ts",
+      "rules/16-api-errors-carry-code-and-message.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "error",
+        "code"
+      ],
+      [
+        "message"
+      ],
+      [
+        "codes only",
+        "code only",
+        "just the code",
+        "no message",
+        "without.{0,10}message",
+        "error.{0,10}only"
+      ]
+    ],
+    "forbid_mention": [
+      "(always|from the start|since the beginning)[^.\\n]{0,25}message",
+      "message[^.\\n]{0,25}(was always|already (there|present|included)|existed (at|from|since))"
+    ],
+    "cite_path": [
+      "errors"
+    ],
+    "cite_commit": []
+  }
+}

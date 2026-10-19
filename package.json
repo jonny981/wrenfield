@@ -1,0 +1,20 @@
+{
+  "name": "wrenfield-bench",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "corpus": "git clone --quiet corpus/wrenfield.bundle corpus/wrenfield",
+    "check": "node bench/check.mjs && node bench/check-answers.mjs",
+    "score": "node bench/score-answers.mjs",
+    "grade": "node bench/build/grade.mjs",
+    "test": "vitest run bench/build/grade.test.mjs"
+  },
+  "devDependencies": {
+    "better-sqlite3": "^11.10.0",
+    "vitest": "^3.1.1"
+  },
+  "license": "MIT"
+}

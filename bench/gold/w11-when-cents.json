@@ -1,0 +1,35 @@
+{
+  "id": "w11-when-cents",
+  "expected": "April 10-11 2025: 4d04f9a (money moves to integer cents) then the schema/store/totals reads (ebcb905, 40dfdbf, 33ab429, f561b80, ff0ef41). Decision note money-is-cents.md committed b61ec9e on April 14.",
+  "gold": {
+    "commits": [
+      "4d04f9a",
+      "ebcb905",
+      "40dfdbf",
+      "33ab429",
+      "f561b80",
+      "ff0ef41",
+      "b61ec9e"
+    ],
+    "paths": [
+      "handbook/decisions/money-is-cents.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "4d04f9a|b61ec9e"
+      ],
+      [
+        "april|apr 2025|2025-04"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "money-is-cents"
+    ],
+    "cite_commit": [
+      "4d04f9a|b61ec9e"
+    ]
+  }
+}

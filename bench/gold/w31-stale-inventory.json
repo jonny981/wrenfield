@@ -1,0 +1,58 @@
+{
+  "id": "w31-stale-inventory",
+  "expected": "handbook/runbooks/deploy.md (superseded by deploy-docker.md Aug 2025); handbook/conventions/pagination.md (superseded by pagination-cursor.md Oct 2025); handbook/decisions/money-as-floats.md (reversed by money-is-cents.md Apr 2025); handbook/product/order-states.md (contradicts the transition table — placed skips paid); handbook/runbooks/restart-loses-data.md (in-memory era, stale since sqlite landed Apr 2025).",
+  "gold": {
+    "commits": [
+      "53e9d62",
+      "e06b530",
+      "b61ec9e",
+      "288037e",
+      "a21d3d1"
+    ],
+    "paths": [
+      "handbook/runbooks/deploy.md",
+      "handbook/conventions/pagination.md",
+      "handbook/decisions/money-as-floats.md",
+      "handbook/product/order-states.md",
+      "handbook/runbooks/restart-loses-data.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "deploy\\.md|deploy runbook"
+      ],
+      [
+        "pagination\\.md|offset"
+      ],
+      [
+        "money-as-floats|float"
+      ],
+      [
+        "order-states|placed"
+      ],
+      [
+        "restart-loses-data|restart",
+        "in-memory",
+        "restart"
+      ],
+      [
+        "stale",
+        "superseded",
+        "outdated",
+        "out of date",
+        "no longer",
+        "old",
+        "obsolete"
+      ],
+      [
+        "deploy\\.md[^.\\n]{0,80}(stale|superseded|outdated|obsolete|old|no longer)"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "handbook/"
+    ],
+    "cite_commit": []
+  }
+}

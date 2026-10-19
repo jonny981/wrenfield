@@ -1,0 +1,37 @@
+{
+  "id": "w19-wf40-wf52",
+  "expected": "Twice. WF-40 (July 2025): the paginate helper took a page number but callers passed a raw row offset — fixed 15c2f2f, runbook pagination-bug-wf40.md. WF-52 (October 3 2025): the listQuery refactor reintroduced it — the helper again read page where callers pass offset — fixed 7e3afab with a regression test (4f6c948), runbook pagination-bug-wf52.md.",
+  "gold": {
+    "commits": [
+      "15c2f2f",
+      "6fcdced",
+      "7e3afab",
+      "4f6c948",
+      "620253d"
+    ],
+    "paths": [
+      "handbook/runbooks/pagination-bug-wf40.md",
+      "handbook/runbooks/pagination-bug-wf52.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "15c2f2f|wf.?40|wf-40"
+      ],
+      [
+        "7e3afab|wf.?52|wf-52"
+      ]
+    ],
+    "forbid_mention": [
+      "only once",
+      "never happened before"
+    ],
+    "cite_path": [
+      "pagination-bug"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

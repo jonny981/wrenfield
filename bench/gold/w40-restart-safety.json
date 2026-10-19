@@ -1,0 +1,43 @@
+{
+  "id": "w40-restart-safety",
+  "expected": "No — stale since April 2025. The note describes the in-memory era; sqlite landed a21d3d1/b35e719/15ff479 and the db file survives restarts (WAL). The note itself says it \"stays true until the store lands\" — the store landed.",
+  "gold": {
+    "commits": [
+      "a21d3d1",
+      "b35e719",
+      "15ff479"
+    ],
+    "paths": [
+      "handbook/runbooks/restart-loses-data.md",
+      "src/store/db.ts",
+      "handbook/runbooks/persistence.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "stale",
+        "\\bno\\b",
+        "not (anymore|true|the case)"
+      ],
+      [
+        "sqlite"
+      ],
+      [
+        "restart-loses-data\\.md[^.\\n]{0,70}(stale|superseded|outdated|old|no longer|not.{0,10}(true|correct|accurate))"
+      ]
+    ],
+    "forbid_mention": [
+      "yes.{0,40}still true",
+      "data\\s+(is|are|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,10}lost\\s+on\\s+restart",
+      "restarts?\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)(still\\s+)?(loses?|losing|lost)[^.\\n]{0,10}data",
+      "restart-loses-data\\.md[^.\\n]{0,30}(is|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(true|correct|accurate|current)"
+    ],
+    "cite_path": [
+      "restart-loses-data"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

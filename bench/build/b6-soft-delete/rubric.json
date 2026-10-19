@@ -1,0 +1,15 @@
+{
+  "task": "b6-soft-delete",
+  "decision_encoded": "rule 24 soft-deletes-not-hard-deletes + migration 089 already added deleted_at to products — a memory-less builder issues DELETE FROM or adds a second tombstone column",
+  "hidden_tests": "hidden.test.ts",
+  "blockers": [
+    { "id": "hidden-tests-pass", "check": "npm test with hidden.test.ts dropped in", "why": "asserts the row survives while reads hide it" },
+    { "id": "no-delete-from", "check": "grep -rn 'DELETE FROM' src/store/ src/routes/ returns nothing", "why": "rule 24 — hard deletes lose traceability" },
+    { "id": "uses-deleted-at", "check": "deletion writes deleted_at (existing column), reads exclude it", "why": "the established tombstone pattern" }
+  ],
+  "quality": [
+    { "id": "deleted-filter-everywhere", "check": "list AND get exclude deleted rows, not just list", "why": "consistency" },
+    { "id": "idempotent-delete", "check": "deleting twice returns the not-found/standard error, not a 500", "why": "rules 12/16" },
+    { "id": "app-error-404", "check": "unknown sku fails through the standard error shape", "why": "rules 12/16" }
+  ]
+}

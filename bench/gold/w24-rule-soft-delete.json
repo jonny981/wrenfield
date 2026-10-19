@@ -1,0 +1,25 @@
+{
+  "id": "w24-rule-soft-delete",
+  "expected": "rules/24-soft-deletes-not-hard-deletes.md — rows get a deleted_at/flag, never DELETE; the audit trail and referential safety beat the tidiness of a missing row.",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "rules/24-soft-deletes-not-hard-deletes.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "24"
+      ],
+      [
+        "soft"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "24-"
+    ],
+    "cite_commit": []
+  }
+}

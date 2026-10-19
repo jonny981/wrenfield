@@ -1,0 +1,28 @@
+{
+  "id": "w29-oncall",
+  "expected": "Weekly rota, Monday 09:00 to Monday 09:00. Primary takes the page — ack within 15 minutes, owns the incident until resolved or explicitly handed over. Secondary is escalation (paged if primary doesn't ack) and the second opinion on risky actions like manual data fixes or restarts under load (ops/on-call-rota.md).",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "handbook/ops/on-call-rota.md",
+      "handbook/ops/alert-channels.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "primary"
+      ],
+      [
+        "escalat",
+        "second pair",
+        "ack"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "on-call"
+    ],
+    "cite_commit": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "w22-rule-migrations",
+  "expected": "rules/23-migrations-are-additive.md — migrations only add (columns, tables, indexes), never drop or rewrite. To change a column: add the new column, backfill, switch reads, drop in a later migration if ever.",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "rules/23-migrations-are-additive.md",
+      "handbook/guides/adding-a-migration.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "23"
+      ],
+      [
+        "additive"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "23-"
+    ],
+    "cite_commit": []
+  }
+}

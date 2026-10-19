@@ -1,0 +1,31 @@
+{
+  "id": "w06-daily-summary",
+  "expected": "The endpoint sums qty * unitPriceCents per line with no discountPct and no shipping — its totals are pre-discount, so it disagrees with /orders/:id/total whenever a discounted order lands in the window. Documented as deliberate in api/ops-exports-reports.md; WF-97 was the incident that taught it. Not a bug — but reconciling against it needs the knowledge.",
+  "gold": {
+    "commits": [],
+    "paths": [
+      "handbook/api/ops-exports-reports.md",
+      "handbook/runbooks/incident-wf97.md",
+      "src/routes/ops.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "discount"
+      ],
+      [
+        "pre-discount",
+        "before discount",
+        "raw",
+        "not applied",
+        "ignores"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "ops-exports-reports|incident-wf97|ops\\.ts"
+    ],
+    "cite_commit": []
+  }
+}

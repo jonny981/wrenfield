@@ -1,0 +1,46 @@
+{
+  "id": "w15-cursor-replaces",
+  "expected": "Offset landed April 21 2025 (0c0f808 route, 0b3e16c store support). Cursor replaced it October 6 2026-era — e06b530 on orders, 783307d on customers/products, decision noted October 9 (dd0ff88 + decisions/cursor-pagination.md).",
+  "gold": {
+    "commits": [
+      "0c0f808",
+      "0b3e16c",
+      "e06b530",
+      "783307d",
+      "dd0ff88"
+    ],
+    "paths": [
+      "handbook/decisions/cursor-pagination.md",
+      "handbook/conventions/pagination.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "offset"
+      ],
+      [
+        "cursor"
+      ],
+      [
+        "e06b530|783307d|0c0f808"
+      ],
+      [
+        "cursor[^.\\n]{0,30}(replaced|superseded|took over|won)",
+        "(replaced|superseded|took over)[^.\\n]{0,25}offset",
+        "offset[^.\\n]{0,15}(was|were|got)[^.\\n]{0,10}(replaced|superseded)"
+      ]
+    ],
+    "forbid_mention": [
+      "offset\\s+(replaced|superseded|took\\s+over|won|beat)\\s+cursor",
+      "cursor\\s+(was|were|got)\\s+[^.\\n]{0,15}(replaced|superseded|rejected|reverted|removed|dropped)",
+      "offset\\s+(is|remains?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|scheme|way|correct)"
+    ],
+    "cite_path": [
+      "cursor-pagination|pagination"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

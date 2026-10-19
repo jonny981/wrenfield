@@ -1,0 +1,39 @@
+{
+  "id": "w35-correct-teammate",
+  "expected": "deploy.md is stale — it describes the manual deploy (ssh, rsync/manual restart) kept for history. Current is handbook/runbooks/deploy-docker.md: docker build + docker run with the wrenfield-data volume, Dockerfile since cae07f0 Aug 4 2025. WF-55 (the bad manual deploy writeup) is the reason for the change.",
+  "gold": {
+    "commits": [
+      "53e9d62",
+      "cae07f0",
+      "89220e4",
+      "ac1c9c3"
+    ],
+    "paths": [
+      "handbook/runbooks/deploy.md",
+      "handbook/runbooks/deploy-docker.md",
+      "handbook/runbooks/incident-wf55.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "stale|old|superseded|outdated"
+      ],
+      [
+        "docker"
+      ],
+      [
+        "deploy\\.md[^.\\n]{0,80}(stale|old|superseded|outdated|no longer)",
+        "(stale|old|superseded|outdated)[^.\\n]{0,30}deploy\\.md"
+      ]
+    ],
+    "forbid_mention": [
+      "teammate[^.\\n]{0,30}(is|was)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,12}(right|correct)",
+      "deploy\\.md\\s+(is|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(current|correct|right|valid|accurate)"
+    ],
+    "cite_path": [
+      "deploy-docker"
+    ],
+    "cite_commit": []
+  }
+}

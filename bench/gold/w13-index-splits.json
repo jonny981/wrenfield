@@ -1,0 +1,37 @@
+{
+  "id": "w13-index-splits",
+  "expected": "First split July 7 2025 (9f4ae5b — index.ts is bootstrap only; decision bf2b0bf July 1). It fattened again on ops endpoints and was re-split April 22 2026: fc923f0 created routes/ops.ts, b40d03f mounted opsRouter and removed the inline handlers, 1663fb5 fixed the missing import.",
+  "gold": {
+    "commits": [
+      "bf2b0bf",
+      "9f4ae5b",
+      "fc923f0",
+      "b40d03f",
+      "1663fb5"
+    ],
+    "paths": [
+      "handbook/decisions/split-index-ts.md",
+      "src/index.ts",
+      "src/routes/ops.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "9f4ae5b|fc923f0|b40d03f"
+      ],
+      [
+        "twice",
+        "two",
+        "again"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "split-index-ts|routes/ops"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

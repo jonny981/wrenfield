@@ -1,0 +1,38 @@
+{
+  "id": "w37-dedupe-surface",
+  "expected": "POST /orders dedupes on Idempotency-Key + request hash via idempotency_keys (8b26c33). POST /customers same (e1a5587). POST /orders/:id/comments is the odd one: it only checks when a key is present but dedupes on order+author+body — the key value is never compared (5940f7e/0fbc4a0). POST /products, /orders/:id/duplicate and /orders/bulk-place take no key at all — a retry creates real rows.",
+  "gold": {
+    "commits": [
+      "8b26c33",
+      "e1a5587",
+      "5940f7e",
+      "0fbc4a0"
+    ],
+    "paths": [
+      "src/routes/orders.ts",
+      "src/routes/customers.ts",
+      "src/routes/products.ts",
+      "handbook/decisions/idempotency-keys.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "comments"
+      ],
+      [
+        "author|body"
+      ],
+      [
+        "products|duplicate|bulk"
+      ]
+    ],
+    "forbid_mention": [
+      "all mutations are idempotent"
+    ],
+    "cite_path": [
+      "orders\\.ts|customers\\.ts"
+    ],
+    "cite_commit": []
+  }
+}

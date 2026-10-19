@@ -1,0 +1,53 @@
+{
+  "id": "w02-order-states",
+  "expected": "No — placed goes to paid (or cancelled), never straight to fulfilled; paid then goes to fulfilled or refunded (src/domain/orderStatus.ts). handbook/product/order-states.md (288037e, written for a contractor) wrongly says placed→fulfilled direct; handbook/product/order-lifecycle.md and handbook/glossary/order-states.md have it right.",
+  "gold": {
+    "commits": [
+      "288037e",
+      "b38f789",
+      "5286da2"
+    ],
+    "paths": [
+      "src/domain/orderStatus.ts",
+      "handbook/product/order-states.md",
+      "handbook/product/order-lifecycle.md",
+      "handbook/glossary/order-states.md"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "\\bno\\b",
+        "cannot",
+        "not allowed",
+        "invalid",
+        "never"
+      ],
+      [
+        "paid"
+      ],
+      [
+        "stale",
+        "wrong",
+        "incorrect",
+        "contradict",
+        "outdated",
+        "misleading"
+      ],
+      [
+        "order-states\\.md[^.\\n]{0,80}(wrong|stale|incorrect|contradict|mislead|not.{0,10}(right|correct|accurate))",
+        "(wrong|stale|incorrect|misleading|contradicts?)[^.\\n]{0,40}order-states\\.md"
+      ]
+    ],
+    "forbid_mention": [
+      "placed\\s+(goes?|can go|may go|transitions?|moves?)\\s+(straight|directly|direct)\\s+to\\s+fulfilled[^.\\n]{0,30}(correct|right|true|valid|allowed|fine|works)",
+      "(yes|correct|right|true)[^.\\n]{0,40}placed[^.\\n]{0,30}(to|->|straight|directly)[^.\\n]{0,15}fulfilled",
+      "order-states\\.md\\s+(is|remains?|stays?)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(right|correct|accurate|current|valid|true)"
+    ],
+    "cite_path": [
+      "orderStatus|order-lifecycle|order-states",
+      "product/order-states"
+    ],
+    "cite_commit": []
+  }
+}

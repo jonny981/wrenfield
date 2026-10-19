@@ -1,0 +1,35 @@
+{
+  "id": "w14-branded-ids",
+  "expected": "January 12 2026: c986e5f (brand types), 03afe91 (store takes them), d155fa3 (routes cast params). Rule 02 (0ecec42) the same week; the seed script was still passing raw strings until c984d23 fixed it in April.",
+  "gold": {
+    "commits": [
+      "c986e5f",
+      "03afe91",
+      "d155fa3",
+      "0ecec42",
+      "c984d23"
+    ],
+    "paths": [
+      "src/domain/ids.ts",
+      "rules/02-ids-are-branded.md",
+      "scripts/seed.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "brand"
+      ],
+      [
+        "02-ids-are-branded|rule 02"
+      ]
+    ],
+    "forbid_mention": [],
+    "cite_path": [
+      "ids\\.ts|02-ids"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

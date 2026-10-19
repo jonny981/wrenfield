@@ -1,0 +1,54 @@
+{
+  "id": "w04-money",
+  "expected": "Integer cents everywhere — unitPriceCents columns, a Cents type, totals summed in cents (rules/01-money-is-integer-cents.md). The March decision money-as-floats.md chose floats \"for now\"; April reversed it (money-is-cents.md b61ec9e, work started 4d04f9a).",
+  "gold": {
+    "commits": [
+      "4e7b839",
+      "b61ec9e",
+      "4d04f9a",
+      "ebcb905"
+    ],
+    "paths": [
+      "handbook/decisions/money-is-cents.md",
+      "handbook/decisions/money-as-floats.md",
+      "rules/01-money-is-integer-cents.md",
+      "src/domain/money.ts"
+    ]
+  },
+  "check": {
+    "must_mention": [
+      [
+        "cents",
+        "integer"
+      ],
+      [
+        "float"
+      ],
+      [
+        "revers",
+        "supersed",
+        "earlier",
+        "originally",
+        "previously",
+        "first chose",
+        "changed course"
+      ],
+      [
+        "(was|were|started as|began as|used to be|once|initially|originally|earlier|first)[^.\\n]{0,20}floats?",
+        "floats?[^.\\n]{0,30}(first|earlier|originally|initially|then|before|superseded|reversed|replaced|rejected)"
+      ]
+    ],
+    "forbid_mention": [
+      "float(ing point)? (is|are|still) (the )?(current|used)",
+      "floats?\\s+(is|are|remains?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|used|format|representation|storage|way|correct|right)",
+      "cents\\s+(was|were|got)\\s+[^.\\n]{0,15}(replaced|reverted|superseded|dropped|removed)",
+      "money\\s+is\\s+(still\\s+)?(stored\\s+as\\s+)?floats?"
+    ],
+    "cite_path": [
+      "money"
+    ],
+    "cite_commit": [
+      "[0-9a-f]{7}"
+    ]
+  }
+}

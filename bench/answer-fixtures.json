@@ -1,0 +1,182 @@
+{
+  "_comment": "Local verification for answer checks. check-answers.mjs runs the real score() over each: every 'pass' fixture must score pass, every 'fail' fixture must score fail. 'fail' fixtures are deliberately reversed or trap-missing answers — the class of wrong the dataset exists to catch.",
+
+  "w01-deploy": {
+    "pass": [
+      "Deploys run docker: `docker build -t orders-api .` then `docker run` with the wrenfield-data volume, per handbook/runbooks/deploy-docker.md (commit 53e9d62; the Dockerfile landed in cae07f0). handbook/runbooks/deploy.md is stale — it still describes the manual rsync deploy that incident WF-55 (ac1c9c3, see handbook/runbooks/incident-wf55.md) ended."
+    ],
+    "fail": [
+      "Docker is obsolete. Follow `handbook/runbooks/deploy.md`, not `handbook/runbooks/deploy-docker.md`. Commit cae07f0.",
+      "Deploys are still manual per handbook/runbooks/deploy.md — the deploy-docker.md note was an experiment. See cae07f0.",
+      "Both runbooks exist; handbook/runbooks/deploy.md documents the procedure and handbook/runbooks/deploy-docker.md is the alternative. Commit cae07f0."
+    ]
+  },
+
+  "w02-order-states": {
+    "pass": [
+      "No — placed goes to paid (or cancelled), never straight to fulfilled; src/domain/orderStatus.ts enforces it. handbook/product/order-states.md is wrong — it was written for a contractor; order-lifecycle.md and glossary/order-states.md have it right (288037e)."
+    ],
+    "fail": [
+      "Yes — placed goes straight to fulfilled, and handbook/product/order-states.md is correct about it (288037e).",
+      "src/domain/orderStatus.ts allows placed to transition to fulfilled directly, as handbook/product/order-states.md documents (288037e)."
+    ]
+  },
+
+  "w03-pagination": {
+    "pass": [
+      "List endpoints paginate by cursor — the cursor-pagination.md decision replaced offset. handbook/conventions/pagination.md is stale; it still teaches offset.",
+      "Cursor is the current scheme (see cursor-pagination.md). The old conventions/pagination.md note describing offset is outdated."
+    ],
+    "fail": [
+      "Offset pagination is the current scheme per handbook/conventions/pagination.md; the cursor note was rejected.",
+      "Cursor was tried and reverted — offset remains correct, as conventions/pagination.md says."
+    ]
+  },
+
+  "w04-money": {
+    "pass": [
+      "Money is integer cents now (commit 4d04f9a). It was floats originally — handbook/decisions/money-as-floats.md records the earlier choice, later reversed (b61ec9e)."
+    ],
+    "fail": [
+      "Money is floats — the integer cents experiment was reverted and money-as-floats.md is current.",
+      "Floats are still used for money; see handbook/decisions/money-as-floats.md."
+    ]
+  },
+
+  "w05-count-filters": {
+    "pass": [
+      "Only the status filter is honoured — /orders/count ignores customer/product filters entirely (src/routes/orders.ts; the orders-list-count doc and incident-wf63 cover it)."
+    ],
+    "fail": [
+      "Yes — it honours customer and product filters; orders.ts applies them like the list endpoint (see orders-list-count).",
+      "It filters correctly on every field the list supports, per orders-list-count.md."
+    ]
+  },
+
+  "w07-error-shape": {
+    "pass": [
+      "At that commit errors were codes only — `{ error: code }` with no message field; the message came later (src/errors.ts history)."
+    ],
+    "fail": [
+      "The error shape at that commit already carried a message — errors.ts always had message (see errors.ts)."
+    ]
+  },
+
+  "w08-comments-dedupe": {
+    "pass": [
+      "No second comment is created — dedupe is by author + body: the same person posting the same body again is skipped even with an idempotency key (src/routes/orders.ts)."
+    ],
+    "fail": [
+      "Yes — a second comment is created; the idempotency key only dedupes identical keys (orders.ts).",
+      "It deduplicates by the idempotency key value itself, like other mutations (orders.ts)."
+    ]
+  },
+
+  "w10-cancel-outbox": {
+    "pass": [
+      "No — cancel writes no outbox event; the status flips silently (src/routes/orders.ts, see the outbox code path)."
+    ],
+    "fail": [
+      "Yes — cancel emits an outbox event like other status transitions (orders.ts)."
+    ]
+  },
+
+  "w12-when-sqlite": {
+    "pass": [
+      "SQLite landed with a21d3d1 (see b35e719); handbook/runbooks/restart-loses-data.md is stale — it dates from the in-memory era (15ff479)."
+    ],
+    "fail": [
+      "handbook/runbooks/restart-loses-data.md is still accurate — data is lost on restart today (a21d3d1)."
+    ]
+  },
+
+  "w15-cursor-replaces": {
+    "pass": [
+      "Cursor replaced offset — commits e06b530 and 783307d; the cursor-pagination.md decision note explains why (0c0f808)."
+    ],
+    "fail": [
+      "Offset replaced cursor — cursor was reverted as too complex and offset is the current scheme (e06b530)."
+    ]
+  },
+
+  "w27-payment-eval": {
+    "pass": [
+      "The team stayed with the incumbent — the payment-providers-eval.md review kept the existing provider."
+    ],
+    "fail": [
+      "The eval chose Stripe; the service switched to Stripe after the payment review."
+    ]
+  },
+
+  "w31-stale-inventory": {
+    "pass": [
+      "Stale: handbook/runbooks/deploy.md is stale (docker now); conventions/pagination.md is superseded by cursor; decisions/money-as-floats.md was reversed; product/order-states.md wrongly skips paid; restart-loses-data.md is from the in-memory era."
+    ],
+    "fail": [
+      "handbook/runbooks/deploy.md, conventions/pagination.md, money-as-floats.md, product/order-states.md and restart-loses-data.md are all current handbook pages."
+    ]
+  },
+
+  "w32-reversed-decisions": {
+    "pass": [
+      "Reversals in decisions/: money was floats then cents (reversed, b61ec9e); pagination offset then cursor; manual deploy then docker; fire-and-forget webhooks then the outbox (see decisions/money-as-floats.md)."
+    ],
+    "fail": [
+      "No reversals — floats are still the money format and offset is the current pagination scheme (see decisions/ and commits)."
+    ]
+  },
+
+  "w34-believed-at-commit": {
+    "pass": [
+      "At 5286da2 the state machine already enforced paid — placed to paid to fulfilled; order-lifecycle documented the convention (orderStatus.ts)."
+    ],
+    "fail": [
+      "At 5286da2 placed went straight to fulfilled — that was correct then, per orderStatus.ts."
+    ]
+  },
+
+  "w35-correct-teammate": {
+    "pass": [
+      "The teammate is wrong — handbook/runbooks/deploy.md is stale; deploys run docker per deploy-docker.md."
+    ],
+    "fail": [
+      "The teammate is right — handbook/runbooks/deploy.md is the current runbook; follow deploy.md (deploy-docker.md was a spike)."
+    ]
+  },
+
+  "w36-money-provenance": {
+    "pass": [
+      "Money started as floats (money-as-floats.md) then moved to integer cents — commits b61ec9e / 4d04f9a reversed the original choice (4e7b839)."
+    ],
+    "fail": [
+      "Floats are still the money format; cents was proposed but never shipped (see money-as-floats.md, 4d04f9a)."
+    ]
+  },
+
+  "w38-doc-vs-code": {
+    "pass": [
+      "The doc is right — daily-summary totals are pre-discount; ops.ts matches the ops-exports doc exactly."
+    ],
+    "fail": [
+      "The doc is wrong — totals include discounts; ops.ts applies them (ops-exports is stale)."
+    ]
+  },
+
+  "w39-dockerfile-check": {
+    "pass": [
+      "Yes — the Dockerfile exists, added in cae07f0 (August 2025)."
+    ],
+    "fail": [
+      "No Dockerfile in the repo — deploys are manual (cae07f0)."
+    ]
+  },
+
+  "w40-restart-safety": {
+    "pass": [
+      "No — handbook/runbooks/restart-loses-data.md is stale; sqlite persists across restarts (a21d3d1, in-memory era was 15ff479)."
+    ],
+    "fail": [
+      "Yes — a restart still loses data; restart-loses-data.md is still true (a21d3d1)."
+    ]
+  }
+}
