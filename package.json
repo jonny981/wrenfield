@@ -10,7 +10,7 @@
     "check": "node bench/check.mjs && node bench/check-answers.mjs",
     "score": "node bench/score-answers.mjs",
     "grade": "node bench/build/grade.mjs",
-    "test": "vitest run bench/build/grade.test.mjs"
+    "test": "vitest run bench/build/grade.test.mjs bench/build/run.test.mjs"
   },
   "devDependencies": {
     "better-sqlite3": "^11.10.0",
