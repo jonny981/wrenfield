@@ -13,6 +13,19 @@
     "must_mention": [
       [
         "208b42e|june|jun 2026"
+      ],
+      [
+        "npm (i|run|test)\\b",
+        "\\bseed\\b",
+        "rules/",
+        "enforced in review",
+        "bootstrap",
+        "src/(store|domain)",
+        "integer cents",
+        "branded",
+        "cursor",
+        "idempotency",
+        "additive"
       ]
     ],
     "forbid_mention": [],

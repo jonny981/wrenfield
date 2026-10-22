@@ -17,14 +17,14 @@
   "check": {
     "must_mention": [
       [
-        "stale|old|superseded|outdated"
+        "stale|old|superseded|historical|replac(?:ed|ing)|outdated"
       ],
       [
         "docker"
       ],
       [
-        "deploy\\.md[^.\\n]{0,80}(stale|old|superseded|outdated|no longer)",
-        "(stale|old|superseded|outdated)[^.\\n]{0,30}deploy\\.md"
+        "deploy\\.md[^.\\n]{0,80}(stale|old|superseded|historical|replac(?:ed|ing)|outdated|no longer)",
+        "(stale|old|superseded|historical|replac(?:ed|ing)|outdated)[^.\\n]{0,90}deploy\\.md"
       ]
     ],
     "forbid_mention": [

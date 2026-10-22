@@ -27,11 +27,14 @@
         "out of date",
         "no longer",
         "old",
-        "obsolete"
+        "obsolete",
+        "historical",
+        "replaced",
+        "replacing"
       ],
       [
-        "pagination\\.md[^.\\n]{0,80}(stale|superseded|outdated|obsolete|old|no longer)",
-        "(stale|old|superseded|outdated|obsolete|no longer)[^.\\n]{0,30}pagination\\.md"
+        "pagination\\.md[^.\\n]{0,80}(stale|superseded|historical|replac(?:ed|ing)|outdated|obsolete|old|no longer)",
+        "(stale|old|superseded|historical|replac(?:ed|ing)|outdated|obsolete|no longer)[^.\\n]{0,90}pagination\\.md"
       ]
     ],
     "forbid_mention": [

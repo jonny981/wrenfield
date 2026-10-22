@@ -29,11 +29,15 @@
         "out of date",
         "no longer",
         "old",
-        "obsolete"
+        "obsolete",
+        "historical",
+        "replaced",
+        "replacing"
       ],
       [
-        "deploy\\.md[^.\\n]{0,90}(stale|superseded|outdated|obsolete|old|no longer|not.{0,12}current|wrong)",
-        "(stale|old|superseded|outdated|obsolete|no longer)[^.\\n]{0,40}deploy\\.md"
+        "deploy\\.md[^.\\n]{0,90}(stale|superseded|historical|replac(?:ed|ing)|outdated|obsolete|old|no longer|not.{0,12}current|wrong)",
+        "(stale|old|superseded|historical|replac(?:ed|ing)|outdated|obsolete|no longer)[^.\\n]{0,90}deploy\\.md",
+        "supersed\\w*[^\\n]{0,250}deploy\\.md"
       ]
     ],
     "forbid_mention": [

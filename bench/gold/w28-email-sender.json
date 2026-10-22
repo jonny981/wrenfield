@@ -14,7 +14,9 @@
         "postmark"
       ]
     ],
-    "forbid_mention": [],
+    "forbid_mention": [
+      "(?<!(not|never|n't|n’t)\\s)(uses?|chose|picked|went with|switched to|moved to|selected)\\s+(amazon\\s+)?(sendgrid|ses|mailgun)\\b"
+    ],
     "cite_path": [
       "email-senders|email-sender"
     ],

@@ -28,7 +28,9 @@
       [
         "cursor[^.\\n]{0,30}(replaced|superseded|took over|won)",
         "(replaced|superseded|took over)[^.\\n]{0,25}offset",
-        "offset[^.\\n]{0,15}(was|were|got)[^.\\n]{0,10}(replaced|superseded)"
+        "offset[^.\\n]{0,40}(was|were|got)[^.\\n]{0,10}(replaced|superseded)",
+        "(replaced|superseded)\\s+by\\s+(the\\s+)?cursor",
+        "cursor[^.\\n]{0,60}replac(ed|es|ing)[^.\\n]{0,20}offset"
       ]
     ],
     "forbid_mention": [

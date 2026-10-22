@@ -1,6 +1,6 @@
 {
   "id": "w08-comments-dedupe",
-  "expected": "Yes — it dedupes anyway. The endpoint only checks when a key is present, but the lookup matches order_id + author + body, not the key value (src/routes/orders.ts, fixed in 0fbc4a0 after the first version read the wrong table in 5940f7e). Same content from the same author on the same order is treated as a retry regardless of key.",
+  "expected": "No — it dedupes anyway. The endpoint only checks when a key is present, but the lookup matches order_id + author + body, not the key value (src/routes/orders.ts, fixed in 0fbc4a0 after the first version read the wrong table in 5940f7e). Same content from the same author on the same order is treated as a retry regardless of key.",
   "gold": {
     "commits": [
       "5940f7e",
@@ -27,13 +27,16 @@
       ],
       [
         "author[^.\\n]{0,25}(and|plus|\\+|&)\\s*body",
-        "same author[^.\\n]{0,30}(body|text)"
+        "same author[^.\\n]{0,30}(body|text)",
+        "(match|check|compar|dedup)\\w*[^.\\n]{0,40}content"
       ]
     ],
     "forbid_mention": [
       "yes.*second comment (is )?created",
       "(it|the (api|service|endpoint|server|dedupe?|deduplication))\\s+(deduplicates?|dedupes?|skips?|ignores?|rejects?|matches?|compares?)[^.\\n]{0,20}(by|on|via|using|against)\\s+(the\\s+)?(idempotency[ -]?)?key",
-      "idempotency[ -]?key\\s+(is|alone)\\s+(what|how|the dedup)"
+      "idempotency[ -]?key\\s+(is|alone)\\s+(what|how|the dedup)",
+      "^\\W*yes\\b",
+      "different[^.\\n]{0,120}(?<!(not|never|n't|n’t)\\s)(creates?|writes?|inserts?|produces?)\\s+(a\\s+)?(second|another|duplicate)\\s+(comment|row)"
     ],
     "cite_path": [
       "orders\\.ts|orders-comments"

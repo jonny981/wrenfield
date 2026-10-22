@@ -28,7 +28,8 @@
       ]
     ],
     "forbid_mention": [
-      "all mutations are idempotent"
+      "all mutations are idempotent",
+      "comments?[^.\\n]{0,80}(?<!(not|never|n't|n’t)\\s)(dedupes?|deduplicates?|matches|compares)\\s+(on|by|using|against|via)\\s+(the\\s+)?(idempotency[ -]?)?key\\b"
     ],
     "cite_path": [
       "orders\\.ts|customers\\.ts"

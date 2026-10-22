@@ -36,7 +36,7 @@
       ],
       [
         "order-states\\.md[^.\\n]{0,80}(wrong|stale|incorrect|contradict|mislead|not.{0,10}(right|correct|accurate))",
-        "(wrong|stale|incorrect|misleading|contradicts?)[^.\\n]{0,40}order-states\\.md"
+        "(wrong|stale|incorrect|misleading|contradicts?)[^.\\n]{0,90}order-states\\.md"
       ]
     ],
     "forbid_mention": [

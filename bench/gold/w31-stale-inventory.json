@@ -43,15 +43,25 @@
         "out of date",
         "no longer",
         "old",
-        "obsolete"
+        "obsolete",
+        "historical",
+        "replaced",
+        "replacing"
       ],
       [
-        "deploy\\.md[^.\\n]{0,80}(stale|superseded|outdated|obsolete|old|no longer)"
+        "deploy\\.md[^.\\n]{0,80}(stale|superseded|historical|replac(?:ed|ing)|outdated|obsolete|old|no longer)",
+        "(stale|old|superseded|historical|replac(?:ed|ing)|outdated|obsolete|no longer)[^.\\n]{0,90}deploy\\.md"
       ]
     ],
-    "forbid_mention": [],
+    "forbid_mention": [
+      "deploy\\.md\\s+(is|remains?|stays?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|correct|right|valid|accurate|true)",
+      "pagination\\.md\\s+(is|remains?|stays?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|correct|right|valid|accurate|true)",
+      "money-as-floats(\\.md)?\\s+(is|remains?|stays?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|correct|right|valid|accurate|true)",
+      "order-states\\.md\\s+(is|remains?|stays?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|correct|right|valid|accurate|true)",
+      "restart-loses-data(\\.md)?\\s+(is|remains?|stays?|still)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,15}(the\\s+)?(current|correct|right|valid|accurate|true)"
+    ],
     "cite_path": [
-      "handbook/"
+      "^(handbook/)?((api|architecture|conventions|decisions|glossary|guides|meetings|ops|product|runbooks|vendors)/|glossary\\.md$)"
     ],
     "cite_commit": []
   }

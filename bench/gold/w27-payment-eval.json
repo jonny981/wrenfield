@@ -18,8 +18,8 @@
       ]
     ],
     "forbid_mention": [
-      "switched to (stripe|adyen|braintree)",
-      "(moved|migrated|adopted|chose|picked|went with|uses?|use)\\s+(to\\s+)?(stripe|adyen|braintree)"
+      "(?<!(not|never|n't|n’t)\\s)switched to (stripe|adyen|braintree)",
+      "(?<!(not|never|n't|n’t)\\s)(moved|migrated|adopted|chose|picked|went with|uses?|use)\\s+(to\\s+)?(stripe|adyen|braintree)"
     ],
     "cite_path": [
       "payment"

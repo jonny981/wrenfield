@@ -19,10 +19,15 @@
         "before discount",
         "raw",
         "not applied",
-        "ignores"
+        "ignores",
+        "exclud\\w*[^.\\n]{0,20}discount",
+        "without[^.\\n]{0,20}discount",
+        "gross"
       ]
     ],
-    "forbid_mention": [],
+    "forbid_mention": [
+      "(it|this|that|the discrepancy|the (daily[- ])?summary|the report)\\s*(is|'s|’s)\\s+(?!.{0,16}\\b(not|no longer|never|n't)\\b)[^.\\n]{0,10}\\b(a\\s+)?(real\\s+|genuine\\s+)?bug\\b"
+    ],
     "cite_path": [
       "ops-exports-reports|incident-wf97|ops\\.ts"
     ],

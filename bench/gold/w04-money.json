@@ -34,7 +34,7 @@
         "changed course"
       ],
       [
-        "(was|were|started as|began as|used to be|once|initially|originally|earlier|first)[^.\\n]{0,20}floats?",
+        "(was|were|started as|began as|used to be|once|initially|originally|earlier|first)[^.\\n]{0,40}floats?",
         "floats?[^.\\n]{0,30}(first|earlier|originally|initially|then|before|superseded|reversed|replaced|rejected)"
       ]
     ],

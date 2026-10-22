@@ -33,7 +33,10 @@
         "wf.?52|7e3afab"
       ]
     ],
-    "forbid_mention": [],
+    "forbid_mention": [
+      "offset\\s+(replaced|superseded|took\\s+over|won|beat)\\s+cursor",
+      "cursor\\s+(was|were|got)\\s+[^.\\n]{0,15}(replaced|superseded|rejected|reverted|removed|dropped)"
+    ],
     "cite_path": [
       "pagination"
     ],

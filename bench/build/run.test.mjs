@@ -221,7 +221,7 @@ const baseDeps = (env, grade) => ({
   env,
   install: () => {},
   grade: grade ?? gradeOk,
-  curate: async () => '[2026-01-01] the recorded decision (said 2026-01-01; E1)',
+  curate: async () => ({ log: '[2026-01-01] the recorded decision (said 2026-01-01; E1)', rules: '# Money is integer cents' }),
   profile: '',
 });
 
@@ -240,6 +240,8 @@ describe('the run', () => {
     expect(none).not.toContain('## Context from memory');
     expect(curate.startsWith('## Context from memory\n\n')).toBe(true);
     expect(curate).toContain('the recorded decision');
+    expect(curate).toContain('\n\n## Rules from memory\n\n# Money is integer cents\n\n');
+    expect(none).not.toContain('## Rules from memory');
     expect(curate.endsWith(raw)).toBe(true);
     // each curate attempt leaves its log beside the brief
     const runDir = join(out, summary.run);

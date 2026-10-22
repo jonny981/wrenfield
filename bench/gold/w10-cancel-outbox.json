@@ -15,11 +15,10 @@
   "check": {
     "must_mention": [
       [
-        "\\bno\\b",
-        "does not",
-        "no event",
-        "silent",
-        "doesn.t"
+        "^\\W*no\\b",
+        "no outbox (row|event|insert|write)",
+        "(does not|doesn.t|never|won.t)\\s+(emit|write|insert|enqueue|fire|send|trigger|produce|create|publish)[^.\\n]{0,40}(outbox|event|webhook)",
+        "\\bsilently\\b"
       ]
     ],
     "forbid_mention": [

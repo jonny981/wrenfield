@@ -92,13 +92,15 @@ node bench/build/run.mjs \
   `bench/build/results/`).
 
 The `curate` setup calls `pickFromSources` over the clone's
-`gitHistory` and `knowledgeBase('handbook')` sources with each kind's
-fitted cascade, then `curate()`, all at the package defaults. The
-clone's `rules/` folder is not a source: rules Curate selects stay in
-`picked.selected` as exact text and never reach the writer or the
-agent's prompt, so asking the decide model about them would spend calls
-for nothing the run uses. The returned log sits above the brief under
-`## Context from memory`.
+`gitHistory`, `knowledgeBase('handbook')` and `rules('rules')` sources
+with each kind's fitted cascade, then `curate()`, all at the package
+defaults. The returned log sits above the brief under
+`## Context from memory`. The writer never sees a rule: the rules
+Curate selects reach the agent as their exact text, joined with blank
+lines as `memory()` joins them, under `## Rules from memory` between
+the log and the brief. Each attempt folder also keeps
+`curate-record.json`, the pick and curate records, which name the
+preset the package defaults resolved to.
 
 ### Keeping your own agent instructions out
 
@@ -231,6 +233,7 @@ One `bench/build/results/<run-id>/` folder per run:
   `failed` when the runner itself errored (for example a Curate or
   grader exception).
 - **`<task>-<setup>/`** per attempt holds `brief.md` as sent,
-  `curate.log` for the curate setup, `agent.stdout`/`agent.stderr`,
+  `curate.log` and `curate-record.json` for the curate setup,
+  `agent.stdout`/`agent.stderr`,
   `change.patch` (the diff readers saw), `grade.json` and the grader's
   `hidden-tests.log`.

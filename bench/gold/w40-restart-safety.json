@@ -24,7 +24,8 @@
         "sqlite"
       ],
       [
-        "restart-loses-data\\.md[^.\\n]{0,70}(stale|superseded|outdated|old|no longer|not.{0,10}(true|correct|accurate))"
+        "restart-loses-data\\.md[^.\\n]{0,70}(stale|superseded|historical|replac(?:ed|ing)|outdated|obsolete|old|no longer|not.{0,10}(true|correct|accurate))",
+        "(stale|old|superseded|historical|replac(?:ed|ing)|outdated|obsolete|no longer)[^.\\n]{0,90}restart-loses-data\\.md"
       ]
     ],
     "forbid_mention": [

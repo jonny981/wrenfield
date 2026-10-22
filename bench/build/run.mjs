@@ -8,8 +8,9 @@
 //     [--models models.mjs] [--curate-from ../curate] [--time-limit 1800] [--out dir]
 //
 // "none" gives the agent the brief alone. "curate" first asks the published
-// @curatejs packages for a memory log over the clone's git history and
-// markdown, and puts it above the brief under "## Context from memory". The
+// @curatejs packages for a memory log over the clone's git history,
+// handbook and rules, and puts it above the brief under "## Context from
+// memory", with the selected rules' exact text under "## Rules from memory". The
 // agent command runs in the clone with the brief on stdin ($BRIEF_FILE names
 // the same brief on disk), under a per-attempt time limit, with the
 // operator's global agent-instruction files denied to it (see the README).
@@ -224,11 +225,11 @@ async function installCurate(from) {
   };
 }
 
-// Package defaults end to end: git history and the handbook notes as
-// knowledge, each kind's fitted cascade, and the caller's decide and
-// write. The clone's rules folder is not a source: picked rules stay in
-// `picked.selected` and never reach the writer or the agent's prompt.
-async function curateLog({ mods, cloneDir, brief, modelsFile }) {
+// Package defaults end to end: git history, the handbook notes as
+// knowledge and the rules folder, each kind's fitted cascade, and the
+// caller's decide and write. The writer never sees a rule: selected rules
+// come back as their exact text, joined as memory() joins them.
+async function curateLog({ mods, cloneDir, brief, modelsFile, outDir }) {
   const models = await import(pathToFileURL(modelsFile).href);
   if (typeof models.decide !== 'function' || typeof models.write !== 'function') {
     throw new Error('the models file must export decide and write functions');
@@ -236,6 +237,7 @@ async function curateLog({ mods, cloneDir, brief, modelsFile }) {
   const sources = [
     mods.git.gitHistory(cloneDir),
     mods.markdown.knowledgeBase(join(cloneDir, 'handbook')),
+    mods.markdown.rules(join(cloneDir, 'rules')),
   ];
   const picked = await mods.core.pickFromSources(sources, { task: brief }, {
     task: brief,
@@ -243,10 +245,14 @@ async function curateLog({ mods, cloneDir, brief, modelsFile }) {
     cascadesByKind: { 'git-history': mods.git.GIT_HISTORY_CASCADE, markdown: mods.markdown.MARKDOWN_CASCADE },
   });
   if (picked.reads.some((read) => read.status !== 'read' || !read.complete)
-    || picked.record.candidates.some((item) => item.status === 'unanswered' || item.status === 'unassessed')) {
+    || picked.record.candidates.some((item) => item.status === 'unanswered'
+      || (item.status === 'unassessed' && item.reason !== 'gate'))) {
     throw new Error('curate: context collection did not finish; inspect the source and decision records.');
   }
-  return (await mods.core.curate(brief, picked, { write: models.write })).log;
+  const result = await mods.core.curate(brief, picked, { write: models.write });
+  if (outDir) await writeFile(join(outDir, 'curate-record.json'), JSON.stringify({ pick: picked.record, curate: result.record }, null, 2));
+  const rules = picked.selected.filter((item) => item.role === 'rule').map((item) => item.text).join('\n\n');
+  return { log: result.log, rules };
 }
 
 // ---------- readers ----------
@@ -308,9 +314,9 @@ async function attempt({ task, taskDir, setup, brief, opts, workDir, runDir, dep
     const base = git(cloneDir, 'rev-parse', 'HEAD').trim();
     let prompt = brief;
     if (setup === 'curate') {
-      const log = await deps.curate({ cloneDir, brief });
+      const { log, rules } = await deps.curate({ cloneDir, brief, outDir });
       await writeFile(join(outDir, 'curate.log'), log);
-      prompt = `## Context from memory\n\n${log}\n\n${brief}`;
+      prompt = `## Context from memory\n\n${log}\n\n${rules ? `## Rules from memory\n\n${rules}\n\n` : ''}${brief}`;
     }
     // $BRIEF_FILE sits outside this repository: next to the results tree
     // it would invite the agent to read the rubric and hidden tests
@@ -457,7 +463,7 @@ export async function runBench(opts, deps = {}) {
     : undefined;
   if (setups.includes('curate') && !runDeps.curate) {
     if (!opts.models) throw new Error('the curate setup needs --models <file> exporting decide and write');
-    runDeps.curate = ({ cloneDir, brief }) => curateLog({ mods, cloneDir, brief, modelsFile: opts.models });
+    runDeps.curate = ({ cloneDir, brief, outDir }) => curateLog({ mods, cloneDir, brief, modelsFile: opts.models, outDir });
   }
   const runId = new Date().toISOString().replace(/[:.]/g, '-');
   const outRoot = resolve(opts.out ?? join(BENCH, 'results'));

@@ -28,11 +28,14 @@
         "out of date",
         "no longer",
         "old",
-        "obsolete"
+        "obsolete",
+        "historical",
+        "replaced",
+        "replacing"
       ],
       [
-        "restart-loses-data\\.md[^.\\n]{0,70}(stale|superseded|outdated|obsolete|old|no longer|in-memory era)",
-        "(stale|old|superseded|outdated|obsolete)[^.\\n]{0,40}restart-loses-data\\.md"
+        "restart-loses-data\\.md[^.\\n]{0,70}(stale|superseded|historical|replac(?:ed|ing)|outdated|obsolete|old|no longer|in-memory era)",
+        "(stale|old|superseded|historical|replac(?:ed|ing)|outdated|obsolete)[^.\\n]{0,90}restart-loses-data\\.md"
       ]
     ],
     "forbid_mention": [

@@ -3,7 +3,10 @@
 
   "w01-deploy": {
     "pass": [
-      "Deploys run docker: `docker build -t orders-api .` then `docker run` with the wrenfield-data volume, per handbook/runbooks/deploy-docker.md (commit 53e9d62; the Dockerfile landed in cae07f0). handbook/runbooks/deploy.md is stale — it still describes the manual rsync deploy that incident WF-55 (ac1c9c3, see handbook/runbooks/incident-wf55.md) ended."
+      "Deploys run docker: `docker build -t orders-api .` then `docker run` with the wrenfield-data volume, per handbook/runbooks/deploy-docker.md (commit 53e9d62; the Dockerfile landed in cae07f0). handbook/runbooks/deploy.md is stale — it still describes the manual rsync deploy that incident WF-55 (ac1c9c3, see handbook/runbooks/incident-wf55.md) ended.",
+      "The current documented deployment uses Docker, replacing the March manual procedure:\n\n```sh\ndocker build -t orders-api .\ndocker run -d -p 3000:3000 -v wrenfield-data:/app/data -e ORDER_WEBHOOK_URL=... orders-api\n```\n\nThese commands come from `runbooks/deploy-docker.md#1` (`53e9d62`). The supplied context does **not** include the Dockerfile, so we cannot say what commands run inside the image build or at container startup.\n\nThe older procedure built on the release branch with `npm run build`, copied `dist/` and `package.json` to the server with rsync, then ran `npm ci --omit=dev` and restarted through systemd. That is historical, superseded deployment guidance (`89220e4`, `runbooks/deploy.md#1`; replaced by `53e9d62`, `runbooks/deploy-docker.md#1`).\n\nNot everything in the handbook still holds:\n\n- **“Restarting loses everything” is obsolete.** SQLite persistence replaced in-memory storage. The database defaults to `data/orders.db`, supports a `DB_FILE` override, and uses WAL mode. The old `restart-loses-data.md` page was retained for history (`3b50a2c`, `runbooks/persistence.md#1`).\n- **Keeping the Docker volume matters.** Restarts preserve state; recreating the container without the volume does not preserve that state (`53e9d62`, `runbooks/deploy-docker.md#1`).\n- **A successful build cannot be assumed.** July notes report a long-broken strict TypeScript build. Fixes added the missing `OrderRow.tags` field and `@types/better-sqlite3`, but the latter’s lockfile update was still separate. The context does not establish a subsequent passing build (`71459aa`, `def0981`; affected source/package paths were not supplied).\n\nThe handbook itself says notes can be wrong and code wins when in doubt (`README.md#1.1`; no commit ID supplied). From this context, Docker is the current documented method, but its internal commands and present build health remain unverified.",
+      "The latest deployment instructions use Docker (`53e9d62`, `runbooks/deploy-docker.md#1`):\n\n```sh\ndocker build -t orders-api .\ndocker run -d -p 3000:3000 -v wrenfield-data:/app/data -e ORDER_WEBHOOK_URL=... orders-api\n```\n\nThese supersede the March manual procedure: run `npm run build` on the release branch, rsync `dist/` and `package.json` to the server, run `npm ci --omit=dev`, then restart through systemd (`89220e4`, `runbooks/deploy.md#1`). The supplied context does **not** show the Dockerfile’s internal commands, so we cannot say exactly what build or startup commands Docker executes.\n\nSome handbook guidance is stale:\n\n- **“Deploys lose in-memory state” is historical guidance.** Orders moved from a Map to SQLite in `b35e719`. The persistence runbook explicitly superseded the old restart-loss page: the database is `data/orders.db`, overridable with `DB_FILE`, with WAL enabled (`3b50a2c`, `runbooks/persistence.md#1`).\n- **Persistence depends on retaining the volume.** The Docker instructions mount `wrenfield-data` at `/app/data`. Restarts preserve state; recreating the container without the volume does not (`53e9d62`, `runbooks/deploy-docker.md#1`).\n- **Do not assume the documented build succeeds.** `71459aa` fixed an `OrderRow.tags` typing omission and said nobody ran the build; `def0981` added `@types/better-sqlite3`, reported that the build had been red since the strict-mode change, and deferred the lockfile. Neither entry supplies source file paths or establishes a subsequently green build.\n\nFor backups, the persistence page specifies a WAL-checkpointed database copy or `sqlite3 orders.db \".backup out.db\"` (`3b50a2c`, `runbooks/persistence.md#1`).\n\nTreat Docker as the latest documented deployment method, with actual build health unconfirmed by this context. That follows the handbook’s own warning to check a note’s age and whether its subject has moved: “When in doubt, code wins” (`README.md#1.1`, dated 2026-08-03; no commit hash supplied).",
+      "The latest deployment procedure in the supplied history is Docker, replacing the March manual deployment:\n\n```sh\ndocker build -t orders-api .\ndocker run -d -p 3000:3000 -v wrenfield-data:/app/data -e ORDER_WEBHOOK_URL=... orders-api\n```\n\nThese commands come from `53e9d62`, `runbooks/deploy-docker.md#1`. The earlier release-branch procedure—`npm run build`, rsync `dist/` and `package.json`, `npm ci --omit=dev`, then a systemd restart—is historical (`89220e4`, `runbooks/deploy.md#1`). The supplied context does not show the Dockerfile’s internal commands, so I cannot establish what runs inside `docker build`.\n\nSeveral handbook claims need qualification:\n\n- **Deploys no longer inherently wipe state.** Orders moved to SQLite in `b35e719`; customers and products followed in `15ff479`. SQLite defaults to `data/orders.db`, supports `DB_FILE`, and retains state across restarts (`3b50a2c`, `runbooks/persistence.md#1`). Docker stores it on the mounted volume; recreating a container without that volume loses access to the retained state (`53e9d62`, `runbooks/deploy-docker.md#1`). The old export-before-restart warning is historical (`8e83cbc`, `runbooks/restart-loses-data.md#1`).\n- **Startup also runs migrations.** The migration guide says so and prescribes testing against a copied database (`guides/adding-a-migration.md#1.2`; no commit supplied). Changes must support rollback to old code under `rules/23-migrations-are-additive.md`.\n- **Required configuration should fail loudly at startup.** The WF-55 follow-up records completed validation after a misspelt `ORDER_WEBOOK_URL` silently skipped webhooks for six hours (`meetings/2025-11-24-incident-review.md#1.1`; no commit supplied). Environment reads belong in `src/config/index.ts` under `rules/30-env-reads-go-through-config.md`.\n- **The release checklist is a requirement, not proof that releases passed it.** It requires tags, clean `pnpm test`, `pnpm build` and lint, a changelog entry, and a semver bump (`guides/release-checklist.md#1.1`). July history contradicts confidence that builds were routinely checked: `71459aa` says strict mode had complained since March and nobody ran the build; `def0981` says `npm run build` had remained red, with driver types causing most errors and the lockfile still to follow. Those records do not establish a subsequently green build.\n\nI would therefore use the Docker runbook as the latest documented procedure, preserve its data volume, and treat build health as unverified from this context. The handbook itself advises checking whether documentation has gone stale: “When in doubt, code wins” (`README.md#1.1`; no commit supplied)."
     ],
     "fail": [
       "Docker is obsolete. Follow `handbook/runbooks/deploy.md`, not `handbook/runbooks/deploy-docker.md`. Commit cae07f0.",
@@ -35,7 +38,8 @@
 
   "w04-money": {
     "pass": [
-      "Money is integer cents now (commit 4d04f9a). It was floats originally — handbook/decisions/money-as-floats.md records the earlier choice, later reversed (b61ec9e)."
+      "Money is integer cents now (commit 4d04f9a). It was floats originally — handbook/decisions/money-as-floats.md records the earlier choice, later reversed (b61ec9e).",
+      "Money is represented as **integer cents**, with fields named `*Cents`, such as `unitPriceCents` and `totalCents`. WF-12 migrated prices and totals, including stored product prices and order-line JSON, and renamed the API field instead of silently changing its units (`4d04f9a`). The current policy is documented in `decisions/money-is-cents.md` (`b61ec9e`); the old `unitPrice` float field was removed without an alias.\n\nThe earlier decision knowingly retained JS floats because the spike had no billing integration and the API was still changing (`decisions/money-as-floats.md`, `4e7b839`). It got the suitability of floats for monetary calculations wrong: binary floating-point error surfaced in a real total (`0.1 + 0.2 ≠ 0.3`). That decision was superseded by integer cents, and `decisions/index.md` marks it reversed. A later rounding bug also required a named `roundHalfUp` in `money.ts` to meet billing’s half-up expectation (`808289a`)."
     ],
     "fail": [
       "Money is floats — the integer cents experiment was reverted and money-as-floats.md is current.",
@@ -50,6 +54,15 @@
     "fail": [
       "Yes — it honours customer and product filters; orders.ts applies them like the list endpoint (see orders-list-count).",
       "It filters correctly on every field the list supports, per orders-list-count.md."
+    ]
+  },
+
+  "w06-daily-summary": {
+    "pass": [
+      "It’s an intentional difference, not a bug. `/reports/daily-summary` is a volume report: it sums `qty * unitPriceCents` across order lines, excluding discounts and shipping. `/orders/:id/total` applies the order-level `discountPct` and adds shipping, producing the invoice breakdown. Both use integer cents. (`runbooks/incident-wf97.md#1.1`; `api/ops-exports-reports.md#1.2`; cents migration `4d04f9a` and totals refactor `33ab429`.)\n\nWF-97 found that finance’s monthly discrepancy equalled exactly the month’s discounts. The resolution was to document the distinction; finance should reconcile invoices using `/orders/:id/total` per order, rather than the daily summary. (`runbooks/incident-wf97.md#1.1`; `api/orders-read-models.md#1.1`.)"
+    ],
+    "fail": [
+      "It's a bug: /reports/daily-summary ignores the discount, so its totals are wrong and need fixing (handbook/api/ops-exports-reports.md)."
     ]
   },
 
@@ -68,7 +81,9 @@
     ],
     "fail": [
       "Yes — a second comment is created; the idempotency key only dedupes identical keys (orders.ts).",
-      "It deduplicates by the idempotency key value itself, like other mutations (orders.ts)."
+      "It deduplicates by the idempotency key value itself, like other mutations (orders.ts).",
+      "Yes. A different `Idempotency-Key` with the same author and body creates a second comment. The comments API explicitly says the same body sent with two different keys lands twice (`api/orders-comments.md#1.2`).\n\nComments gained idempotency support in `5940f7e`, and `0fbc4a0` fixed the dedupe lookup to use the comments table. This endpoint should not be assumed to follow `POST /orders` response-replay semantics.",
+      "A retry with a different Idempotency-Key and the same author and body creates a second comment; the dedupe only replays the same key (handbook/api/orders-comments.md)."
     ]
   },
 
@@ -77,7 +92,8 @@
       "No — cancel writes no outbox event; the status flips silently (src/routes/orders.ts, see the outbox code path)."
     ],
     "fail": [
-      "Yes — cancel emits an outbox event like other status transitions (orders.ts)."
+      "Yes — cancel emits an outbox event like other status transitions (orders.ts).",
+      "I can't tell: no code was included. Please paste src/routes/orders.ts and the outbox module so I can trace it."
     ]
   },
 
@@ -92,28 +108,49 @@
 
   "w15-cursor-replaces": {
     "pass": [
-      "Cursor replaced offset — commits e06b530 and 783307d; the cursor-pagination.md decision note explains why (0c0f808)."
+      "Cursor replaced offset — commits e06b530 and 783307d; the cursor-pagination.md decision note explains why (0c0f808).",
+      "- **Offset pagination landed April 21, 2025**: `GET /orders` gained `?limit=&offset=` with defaults of 50/0 (`0c0f808`); store support landed in `0b3e16c`.\n- **Cursor pagination landed October 6, 2025**: `?offset=` and the bare-array response were replaced by cursor pagination returning `{items, nextCursor}` (`e06b530`; route refactor `92dde04`). The contract was documented in `conventions/pagination-cursor.md` on October 9.\n\nThe context does not provide implementation file paths for those commits.",
+      "Offset pagination landed on **2025-04-21**, with `?limit=&offset=` defaulting to `50/0` (route: `0c0f808`; store support: `0b3e16c`; documented in `conventions/pagination.md` at `e724830`).\n\nCursor pagination landed on **2025-10-06**, replacing `?offset=` and the bare array with `{items, nextCursor}` (`e06b530`; route refactor: `92dde04`). Its contract is documented in `conventions/pagination-cursor.md`, superseding the offset convention."
     ],
     "fail": [
       "Offset replaced cursor — cursor was reverted as too complex and offset is the current scheme (e06b530)."
     ]
   },
 
+  "w17-agents-md": {
+    "pass": [
+      "AGENTS.md landed June 22 2026 in 208b42e. It gives the setup (npm i, npm run seed, npm run dev, npm test), says rules/ is enforced in review, and lists the invariants: integer cents, branded ids, cursor pagination, Idempotency-Key on mutations, additive migrations (AGENTS.md)."
+    ],
+    "fail": [
+      "AGENTS.md was added on **June 22, 2026**, in commit **`208b42e`** (“docs: AGENTS.md for the repo”), at **`AGENTS.md`**.\n\nThe supplied context does not include its contents, so it does not establish what instructions it gives a coding agent about this repo."
+    ]
+  },
+
   "w27-payment-eval": {
     "pass": [
-      "The team stayed with the incumbent — the payment-providers-eval.md review kept the existing provider."
+      "The team stayed with the incumbent — the payment-providers-eval.md review kept the existing provider.",
+      "No switch: the team never switched to Stripe, Adyen or Braintree; it stayed with the incumbent because switching cost beat the fee saving. Revisit if volume doubles or they expand past UK/EU (handbook/vendors/payment-providers-eval.md)."
     ],
     "fail": [
       "The eval chose Stripe; the service switched to Stripe after the payment review."
     ]
   },
 
+  "w28-email-sender": {
+    "fail": [
+      "Wrenfield uses SendGrid; Postmark was rejected as too pricey (handbook/vendors/email-senders-eval.md)."
+    ]
+  },
+
   "w31-stale-inventory": {
     "pass": [
-      "Stale: handbook/runbooks/deploy.md is stale (docker now); conventions/pagination.md is superseded by cursor; decisions/money-as-floats.md was reversed; product/order-states.md wrongly skips paid; restart-loses-data.md is from the in-memory era."
+      "Stale: handbook/runbooks/deploy.md is stale (docker now); conventions/pagination.md is superseded by cursor; decisions/money-as-floats.md was reversed; product/order-states.md wrongly skips paid; restart-loses-data.md is from the in-memory era.",
+      "Stale today: runbooks/deploy.md is stale (docker replaced it, 53e9d62); conventions/pagination.md is superseded by cursor pagination; decisions/money-as-floats.md was reversed to cents; product/order-states.md wrongly has placed going straight to fulfilled; runbooks/restart-loses-data.md still describes the in-memory era and is stale since sqlite landed."
     ],
     "fail": [
-      "handbook/runbooks/deploy.md, conventions/pagination.md, money-as-floats.md, product/order-states.md and restart-loses-data.md are all current handbook pages."
+      "handbook/runbooks/deploy.md, conventions/pagination.md, money-as-floats.md, product/order-states.md and restart-loses-data.md are all current handbook pages.",
+      "Stale: handbook/runbooks/deploy.md is stale (docker replaced it), money-as-floats was reversed to cents, order-states placed→fulfilled is wrong, restart-loses-data is old since sqlite. handbook/conventions/pagination.md is still current: offset pagination is what the API uses.",
+      "Stale today: deploy.md is stale (docker replaced it, 53e9d62); pagination.md is superseded by cursor pagination; money-as-floats.md was reversed to cents; order-states.md wrongly has placed going straight to fulfilled; restart-loses-data.md still describes the in-memory era and is stale since sqlite landed (see src/index.ts)."
     ]
   },
 
@@ -123,6 +160,12 @@
     ],
     "fail": [
       "No reversals — floats are still the money format and offset is the current pagination scheme (see decisions/ and commits)."
+    ]
+  },
+
+  "w33-pagination-saga": {
+    "fail": [
+      "Offset shipped first (0c0f808), broke in WF-40 (15c2f2f) and WF-52 (7e3afab); cursor was tried in e06b530 but cursor was reverted, so offset is back (handbook/conventions/pagination.md)."
     ]
   },
 
@@ -137,7 +180,9 @@
 
   "w35-correct-teammate": {
     "pass": [
-      "The teammate is wrong — handbook/runbooks/deploy.md is stale; deploys run docker per deploy-docker.md."
+      "The teammate is wrong — handbook/runbooks/deploy.md is stale; deploys run docker per deploy-docker.md.",
+      "No. The teammate is pointing at the superseded manual runbook, handbook/runbooks/deploy.md; follow handbook/runbooks/deploy-docker.md instead (docker build, docker run with the wrenfield-data volume, Dockerfile since cae07f0).",
+      "The deploy instructions to follow are `runbooks/deploy-docker.md`, introduced in **`53e9d62`**, replacing the manual deployment instructions in `runbooks/deploy.md` from **`89220e4`**. The supplied context also gives no evidence for a `handbook/` path prefix.\n\nThe Docker runbook specifies building the image and running it with the `wrenfield-data:/app/data` volume. That volume preserves SQLite state across restarts; recreating the container without it loses that persistence (`53e9d62`, `runbooks/deploy-docker.md`).\n\nThe old warning that every restart wipes state is obsolete: **`15ff479`** removed the last in-memory Maps, and **`3b50a2c`** documented that `restart-loses-data.md` remained only for history.\n\nThere is a known documentation conflict: **`2c7fcff`**, `ops/retro-2026-q1.md`, explicitly says the deploy pages disagreed. So “follow the old page” overlooks both its documented replacement and the recorded drift."
     ],
     "fail": [
       "The teammate is right — handbook/runbooks/deploy.md is the current runbook; follow deploy.md (deploy-docker.md was a spike)."
@@ -150,6 +195,12 @@
     ],
     "fail": [
       "Floats are still the money format; cents was proposed but never shipped (see money-as-floats.md, 4d04f9a)."
+    ]
+  },
+
+  "w37-dedupe-surface": {
+    "fail": [
+      "POST /orders and POST /orders/:id/comments dedupe on the Idempotency-Key, storing author and body as sent. POST /products is the one that takes no key (src/routes/orders.ts)."
     ]
   },
 
@@ -173,7 +224,8 @@
 
   "w40-restart-safety": {
     "pass": [
-      "No — handbook/runbooks/restart-loses-data.md is stale; sqlite persists across restarts (a21d3d1, in-memory era was 15ff479)."
+      "No — handbook/runbooks/restart-loses-data.md is stale; sqlite persists across restarts (a21d3d1, in-memory era was 15ff479).",
+      "No. sqlite landed in a21d3d1, b35e719 and 15ff479, and the old in-memory warning in handbook/runbooks/restart-loses-data.md was written before it; data survives restarts (handbook/runbooks/persistence.md)."
     ],
     "fail": [
       "Yes — a restart still loses data; restart-loses-data.md is still true (a21d3d1)."
